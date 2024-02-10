@@ -3,6 +3,7 @@ package mx.com.cursodia.gamersapi.GamersAPIREST.beans;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
@@ -14,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name= "videojuegos")
@@ -33,24 +35,55 @@ public class Videojuego
 	@Column(name = "inv_vid", nullable = false)
 	private Integer inv_vid;
 	
+	
+	
 	@ManyToOne(fetch = FetchType.EAGER) //el fetch es la forma en la que recolecta la informacion
 								   //utilizando el lazy load, carga solamente lo que se necesita cuando se necesita
 	@JoinColumn(name = "cveprov_vid", referencedColumnName = "cve_prov", nullable = false)//indicar la columna la cual se esta enlazando
-	@JsonManagedReference //Esta referencia esta siendo controlada (por @JsonBackReference de Proveedor.java)
+	@JsonBackReference //esto va a controlar la referencia JsonManagedReference que se encuentra en Proveedor.java
 	private Proveedor proveedor;
 	
 	public Videojuego() 
 	{
 		
 	}
+	
+
+	//indicarle a JPA que el atributo de una Entidad no debe de ser persistente, de esta manera, 
+	//JPA pasa por alto el atributo y no es tomado en cuenta a la hora de persistir el Objeto.
+	@Transient
+	private Long proveedorId;
 
 	//springboot va a gestionar cveprov_vid
-	public Videojuego(Long cve_vid, String tit_vid, BigDecimal pre_vid, Integer inv_vid) 
+	public Videojuego(Long cve_vid, String tit_vid, BigDecimal pre_vid, Integer inv_vid, Long proveedorId) 
 	{
 		this.cve_vid = cve_vid;
 		this.tit_vid = tit_vid;
 		this.pre_vid = pre_vid;
 		this.inv_vid = inv_vid;
+		this.proveedorId = proveedorId;
+	}
+
+	public Long getProveedorId() {
+		return proveedor.getCve_prov();
+		//return proveedorId;
+	}
+	
+	public String getNombreProveedor() 
+	{
+		return proveedor.getNom_prov();
+	}
+
+	public void setProveedorId(Long proveedorId) {
+		this.proveedorId = proveedorId;
+	}
+
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
 	}
 
 	public Long getCve_vid() {

@@ -9,18 +9,31 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
+import mx.com.cursodia.gamersapi.GamersAPIREST.beans.Proveedor;
 import mx.com.cursodia.gamersapi.GamersAPIREST.beans.Videojuego;
+import mx.com.cursodia.gamersapi.GamersAPIREST.repository.ProveedorRepository;
 import mx.com.cursodia.gamersapi.GamersAPIREST.repository.VideojuegoRepository;
 
 @RestController
 @RequestMapping("/videojuegos") //ruta que se mapea
 public class VideojuegoController 
 {
-	@Autowired
-	private VideojuegoRepository videojuegoRepository;
+	
+	private final VideojuegoRepository videojuegoRepository;
+	private final ProveedorRepository proveedorRepository;
+	
+	@Autowired //contructor
+	public VideojuegoController(VideojuegoRepository videojuegoRepository, ProveedorRepository proveedorRepository) 
+	{
+		this.videojuegoRepository = videojuegoRepository;
+		this.proveedorRepository = proveedorRepository;
+	}
 	
 	@GetMapping //verbo a mappear
 	public List<Videojuego> getAllVideojuegos()
@@ -28,6 +41,7 @@ public class VideojuegoController
 		return videojuegoRepository.findAll();
 	}
 	
+
 	//Get ONE
 	//hay dos formas de pasar parametros en una ruta en java: Query Param y Path Param
 	//En este caso usamos un Query Param
@@ -54,4 +68,58 @@ public class VideojuegoController
 		
 		
 	}
+	
+	//Insertar Videojuego
+	@PostMapping
+	public ResponseEntity<Videojuego> createVideojuego(@RequestBody Videojuego videojuego)
+	{
+		if(videojuego.getProveedorId() != null)
+		{
+			Proveedor proveedor = proveedorRepository.findById(videojuego.getProveedorId())
+					.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Proveedor no encontrado con id: "
+							+ videojuego.getProveedorId()));
+			
+			videojuego.setProveedor(proveedor);
+		}
+		videojuego.setProveedorId(null);
+		System.err.println(videojuego);
+		Videojuego savedVideojuego = videojuegoRepository.save(videojuego);
+		return new ResponseEntity<>(savedVideojuego, HttpStatus.CREATED);
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -3,6 +3,7 @@ package mx.com.cursodia.gamersapi.GamersAPIREST.beans;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +20,7 @@ public class Proveedor
 	@Id									//que no ↓ se pueden repetir
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //instrucciones para el framework para que sepa como generar mas entidades
 	@Column(name = "cve_prov")
-	private Integer cve_prov;
+	private Long cve_prov;
 	
 	@Column(name = "nom_prov", nullable = false, length = 25)
 	private String nom_prov;
@@ -32,7 +33,7 @@ public class Proveedor
 	
 	@OneToMany(mappedBy = "proveedor")
 	//esta anotacion es para decirle al framework que hacer y no estar buscando constantemente en un ciclo
-	@JsonBackReference //esto va a controlar la referencia JsonManagedReference que se encuentra en Videojuego.java
+	@JsonManagedReference //Esta referencia esta siendo controlada (por @JsonBackReference de Videojuego.java)
 	private List<Videojuego> videojuegos;
 
 	public Proveedor() 
@@ -40,7 +41,7 @@ public class Proveedor
 		super();
 	}
 
-	public Proveedor(Integer cve_prov, String nom_prov, String email_prov, String tel_prov) 
+	public Proveedor(Long cve_prov, String nom_prov, String email_prov, String tel_prov) 
 	{
 		super();
 		this.cve_prov = cve_prov;
@@ -50,11 +51,11 @@ public class Proveedor
 	}
 
 
-	public Integer getCve_prov() {
+	public Long getCve_prov() {
 		return cve_prov;
 	}
 
-	public void setCve_prov(Integer cve_prov) {
+	public void setCve_prov(Long cve_prov) {
 		this.cve_prov = cve_prov;
 	}
 
