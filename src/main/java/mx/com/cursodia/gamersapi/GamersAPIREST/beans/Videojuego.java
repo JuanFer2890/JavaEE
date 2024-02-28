@@ -65,8 +65,19 @@ public class Videojuego
 	}
 
 	public Long getProveedorId() {
-		return proveedor.getCve_prov();
-		//return proveedorId;
+		
+		if (proveedor!=null)
+		{
+			//Este se usará cuando se soliciten los videojuegos mediante el get. "proveedor" será rellenado por JPA
+			return proveedor.getCve_prov();
+		}
+		else
+		{
+			//Este se usará cuando este get sea llamado desde el PUT porque "proveedor" será null porque no hay nada que
+			//lo rellene. En cambio, "proveedorId" vendrá incluido en el json que manda el usuario
+			return proveedorId;
+		}
+		
 	}
 	
 	public String getNombreProveedor() 
@@ -120,7 +131,8 @@ public class Videojuego
 
 	@Override
 	public String toString() {
-		return "Videojuego [cve_vid=" + cve_vid + ", tit_vid=" + tit_vid + ", pre_vid=" + pre_vid + ", inv_vid=" + inv_vid + "]";
+		return "Videojuego [cve_vid=" + cve_vid + ", tit_vid=" + tit_vid + ", pre_vid=" + pre_vid + ", inv_vid="
+				+ inv_vid + ", proveedor=" + proveedor + ", proveedorId=" + proveedorId + "]";
 	}
 	
 	
