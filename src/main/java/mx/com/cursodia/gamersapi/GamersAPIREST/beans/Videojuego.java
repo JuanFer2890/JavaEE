@@ -128,12 +128,12 @@ public class Videojuego
 	public void setInv_vid(Integer inv_vid) {
 		this.inv_vid = inv_vid;
 	}
-
+/*
 	@Override
 	public String toString() {
 		return "Videojuego [cve_vid=" + cve_vid + ", tit_vid=" + tit_vid + ", pre_vid=" + pre_vid + ", inv_vid="
 				+ inv_vid + ", proveedor=" + proveedor + ", proveedorId=" + proveedorId + "]";
-	}
+	}*/
 	
 	
 	

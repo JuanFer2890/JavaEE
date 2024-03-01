@@ -83,6 +83,12 @@ public class Proveedor
 		this.tel_prov = tel_prov;
 	}
 
+	@Override
+	public String toString() {
+		return "Proveedor [cve_prov=" + cve_prov + ", nom_prov=" + nom_prov + ", email_prov=" + email_prov
+				+ ", tel_prov=" + tel_prov + ", videojuegos=" + videojuegos + "]";
+	}
+
 	
 	
 }

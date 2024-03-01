@@ -17,5 +17,11 @@ public class GlobalExceptionHandler
 		return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
 	}
 	
+	@ExceptionHandler(PropertyValueException.class)
+	public ResponseEntity<String> handleMissingPropertyException(PropertyValueException e)
+	{
+		return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+	}
+	
 	//Aqui se podria poner otros manejadores de excepciones+
 }
